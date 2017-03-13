@@ -1,12 +1,13 @@
 package com.github.bingoohuang.randomidgenerator;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
  * 27秒可以生成1千万不重复的10位随机数字母数字, 包括写入文件。
  */
 public class RandomIdGeneratorTest {
-    @Test
+    @Test @Ignore
     public void test1() {
         new RandomIdConfig().expectLen(10).noneOf("0O=").total(10_000)
                 .processor(
