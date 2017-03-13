@@ -25,7 +25,7 @@ public class RandomIdGeneratorTest {
 
     @Test
     public void test2()  {
-        new RandomIdConfig().expectLen(13)
+        new RandomIdConfig().expectLen(10)
                 .total(10_000_000).toFile("random4.txt")
                 .build().create();
     }
