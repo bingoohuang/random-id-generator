@@ -10,7 +10,7 @@ new RandomIdConfig()
         .create();
 ```
 
-
+## GO测试约15秒，JAVA跑测试，约26秒
 ```
 ~/g/random-id-generator> go build src/random_id_gen.go
 ~/g/random-id-generator> ./random_id_gen
@@ -26,6 +26,7 @@ Running com.github.bingoohuang.randomidgenerator.RandomIdGeneratorTest
 Tests run: 2, Failures: 0, Errors: 0, Skipped: 1, Time elapsed: 25.641 sec
 ```
 
+## 示例生成的数据文件
 ```text
 ~/g/random-id-generator> head -10 go_random_id.txt
 EMXMF23XAU
@@ -38,4 +39,39 @@ TFUC43RMEQ
 7DYYOXDDG6
 U3O64NXBIL
 FROLDQ42HC
+```
+
+## DOCKER准备ORACLE测试环境
+```
+docker run --name oracle-xe -d -v /Users/bingoohuang/docker-share:/var/docker-share -p 49160:22 -p 49161:1521 -e ORACLE_ALLOW_REMOTE=true wnameless/oracle-xe-11g
+
+docker exec -it oracle-xe  bash
+
+Connect database with following setting:
+hostname: localhost
+port: 49161
+sid: xe
+username: system
+password: oracle
+Password for SYS & SYSTEM:oracle
+
+create table random_str ( str char(10));
+```
+
+## 控制文件 radom_str.ctl
+```
+LOAD DATA
+INFILE "/var/docker-share/go_random_id.txt"
+APPEND INTO TABLE random_str
+FIELDS TERMINATED BY ','
+(str)
+```
+
+## 导入ORACLE
+```bash
+START=$(date +%s.%N)
+sqlldr system/oracle control=/var/docker-share/random_id.ctl log=random_id.log parallel=true direct=true
+END=$(date +%s.%N)
+DIFF=$(echo "$END - $START" | bc)
+echo $DIFF
 ```
