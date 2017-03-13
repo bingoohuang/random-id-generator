@@ -55,7 +55,12 @@ username: system
 password: oracle
 Password for SYS & SYSTEM:oracle
 
+-- 创建表
 create table random_str ( str char(10));
+-- 有索引的情况下，先行不用索引
+drop index IDX;
+-- 数据倒入完成后，再添加索引
+create unique index idx on RANDOM_STR (str);
 ```
 
 ## 控制文件 radom_str.ctl
@@ -70,6 +75,7 @@ FIELDS TERMINATED BY ','
 ## 导入ORACLE
 ```bash
 START=$(date +%s.%N)
+# 注意，direct=true速度非常快，建议开启
 sqlldr system/oracle control=/var/docker-share/random_id.ctl log=random_id.log parallel=true direct=true
 END=$(date +%s.%N)
 DIFF=$(echo "$END - $START" | bc)
