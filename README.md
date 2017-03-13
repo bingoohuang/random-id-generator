@@ -10,7 +10,7 @@ new RandomIdConfig()
         .create();
 ```
 
-## GO测试约15秒，JAVA跑测试，约26秒
+## GO测试约15秒，JAVA跑测试约26秒
 ```
 ~/g/random-id-generator> go build src/random_id_gen.go
 ~/g/random-id-generator> ./random_id_gen
@@ -81,3 +81,5 @@ END=$(date +%s.%N)
 DIFF=$(echo "$END - $START" | bc)
 echo $DIFF
 ```
+## 杂项
+1. WINDOWS下，以当前时间做为提示符：prompt $t$g
